@@ -1,0 +1,2 @@
+# django-menu
+test application
