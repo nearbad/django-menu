@@ -1,0 +1,32 @@
+{% extends "layout/basic.html" %}
+{% load menu_tags %}
+{% block title %}<title>menu children</title>{% endblock %}
+
+{% block content %}
+<div class="col-6 m-4">
+    <ul class="nav nav-pills">
+        <div class="list-group">
+            {% for child in menu_item.children.all %}
+            {% with request.path|slice:"1:-1" as path %}
+            {% if child.url == path %}
+            <li class="nav-item active">
+                <a class="list-group-item list-group-item-action active" aria-current="true"
+                   href="{% url 'main:menu' child.url %}">{{ child.name }}</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="list-group-item list-group-item-action" href="{% url 'main:menu' child.url %}">
+                    {{ child.name }}</a>
+            </li>
+            {% endif %}
+            {% if child.children.all %}
+            <ul>
+                {% draw_children child %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            {% endfor %}
+        </div>
+    </ul>
+</div>
+{% endblock %}

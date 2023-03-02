@@ -1,0 +1,33 @@
+{% extends "layout/basic.html" %}
+{% load menu_tags %}
+{% block title %}<title>menu</title>{% endblock %}
+
+{% block content %}
+<div class="col-6 m-4">
+    <ul class="nav nav-pills">
+        <div class="list-group">
+            {% for menu_item in menu_items %}
+            {% with request.path|slice:"1:-1" as path %}
+            {% if menu_item.url == path %}
+            <li class="nav-item active">
+                <a class="list-group-item list-group-item-action active" aria-current="true"
+                   href="{% url 'main:menu' menu_item.url %}">{{ menu_item.name }}</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="list-group-item list-group-item-action" href="{% url 'main:menu' menu_item.url %}">
+                    {{ menu_item.name }}</a>
+            </li>
+            {% endif %}
+            {% if menu_item.children.all %}
+            <ul>
+                {% draw_children menu_item %}
+            </ul>
+            {% endif %}
+            </li>
+            {% endwith %}
+            {% endfor %}
+        </div>
+    </ul>
+</div>
+{% endblock %}
